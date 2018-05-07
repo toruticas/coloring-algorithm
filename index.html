@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <script src="/brute_force.js"></script>
+    <script src="/greedy_algorithm.js"></script>
+
+    <script type="text/javascript">
+      var __DATA__ = {}
+
+      function fetchData(name) {
+        fetch(`/data/${name}.json`)
+          .then(response => response.json())
+          .then(json => __DATA__[name] = json)
+      }
+
+      fetchData('brasil')
+      fetchData('usa')
+      fetchData('europe')
+
+      setTimeout(function () {
+        console.log(__DATA__);
+      }, 3000);
+
+      // var colors = AlgorithmBruteForce.run(json)
+      // var colors = GreedyAlgorithm.run(json)
+    </script>
+  </body>
+</html>
