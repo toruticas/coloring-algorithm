@@ -28,6 +28,7 @@ var GreedyAlgorithm = (function() {
 
       var list = _graph[Object.keys(_graph)[u]]
       for (var i = 0; i < list.length; i++) {
+        _counter++
         if (_colours[list[i]]) {
           available[_colorOptions.indexOf(_colours[list[i]])] = false
         }

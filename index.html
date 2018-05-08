@@ -150,8 +150,11 @@
             break;
           default:
             var chromaticNumber = 4
+            var counter = 0
+
             while (true) {
               processedGraph = AlgorithmBruteForce.run(__DATA__[data_set], chromaticNumber)
+              counter += processedGraph.counter
               if (Object.keys(processedGraph.colours).length === Object.keys(__DATA__[data_set]).length) {
                 break;
               }
