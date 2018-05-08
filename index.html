@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Coloring Algorithm</title>
 
     <link rel="stylesheet" href="/vendor/bootstrap.min.css" >
 
@@ -46,10 +46,17 @@
             </select>
           </div>
 
-          <div style="float:right;margin-top:30px;">
-            <button class="btn btn-primary">
+
+          <hr>
+
+          <div class="col-lg-12">
+            <button class="btn btn-primary float-right">
               Run Algorithm
             </button>
+
+            <h4>
+              Execution counter: <span id="counter">0</span>
+            </h4>
           </div>
         </div>
 
@@ -122,6 +129,7 @@
 
       $("button").on("click", function () {
         var graph
+        var processedGraph
         var data_set = $("#data_set").val()
 
         try {
@@ -134,15 +142,17 @@
           p.appendChild(c);
         } catch (e) {}
 
-
         switch ($("#algorithm").val()) {
-          case "greedy_algorithm":
-            graph = prepareGraph(__DATA__[data_set], GreedyAlgorithm.run(__DATA__[data_set]))
+          case "greedy":
+            processedGraph =  GreedyAlgorithm.run(__DATA__[data_set])
             break;
           default:
-            graph = prepareGraph(__DATA__[data_set], AlgorithmBruteForce.run(__DATA__[data_set]))
+            processedGraph = AlgorithmBruteForce.run(__DATA__[data_set])
             break;
         }
+
+        $("#counter").text(processedGraph.counter)
+        graph = prepareGraph(__DATA__[data_set], processedGraph.colours)
 
         var __GLOBAL_GRAPH__ = new sigma({
           container: 'container',

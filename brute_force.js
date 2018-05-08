@@ -38,9 +38,6 @@ var AlgorithmBruteForce = (function() {
       return false
     }
 
-    console.log("Solution exist and Following are the assigned colours:");
-    console.log(_colours);
-
     return true
   }
 
@@ -48,15 +45,12 @@ var AlgorithmBruteForce = (function() {
     _graph = graph
     _count = 0
 
-    console.time('brute_force');
     colouring()
-    console.timeEnd('brute_force');
-    console.log(_count);
 
-    console.log(Object.keys(graph).length);
-    console.log(Object.keys(_colours).length);
-
-    return _colours
+    return {
+      colours: _colours,
+      counter: _count
+    }
   }
 
   return {
