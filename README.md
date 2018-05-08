@@ -11,3 +11,5 @@ https://historicalmapchart.net/
 https://en.wikipedia.org/wiki/Four_color_theorem
 https://en.wikipedia.org/wiki/Map_coloring
 https://en.wikipedia.org/wiki/Graph_coloring
+
+http://sigmajs.org/

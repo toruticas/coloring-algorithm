@@ -3,13 +3,71 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+
+    <link rel="stylesheet" href="/vendor/bootstrap.min.css" >
+
+    <style type="text/css">
+      body {
+        background-color: #EDEDED;
+      }
+
+      #container {
+        /* max-width: 400px; */
+        width: 100%;
+        height: 600px;
+        margin: auto;
+        background-color: white;
+      }
+    </style>
   </head>
+
   <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-4" style="padding:20px">
+          <h2>Settings</h2>
+
+          <div style="margin-top:30px">
+            <strong>Data Set</strong>
+            <select id="data_set" class="form-control">
+              <option value="australia">Australia</option>
+              <option value="usa">USA</option>
+              <option value="brasil">Brasil</option>
+              <option value="europe">Europe</option>
+            </select>
+          </div>
+
+          <div style="margin-top:20px">
+            <strong>Algorithm</strong>
+            <select id="algorithm" class="form-control">
+              <option value="brute_force">Brute Force</option>
+              <option value="greedy">Greedy</option>
+              <option value="welsh_powell">Welsh Powell</option>
+            </select>
+          </div>
+
+          <div style="float:right;margin-top:30px;">
+            <button class="btn btn-primary">
+              Run Algorithm
+            </button>
+          </div>
+        </div>
+
+        <div class="col-lg-8" style="padding:20px">
+          <div id="container"></div>
+        </div>
+      </div>
+    </div>
+
     <script src="/brute_force.js"></script>
     <script src="/greedy_algorithm.js"></script>
+    <script src="/vendor/sigma.min.js"></script>
+    <script src="/vendor/sigma.layout.forceAtlas2.min.js"></script>
+    <script src="/vendor/jquery-3.3.1.min.js"></script>
 
     <script type="text/javascript">
       var __DATA__ = {}
+      var __GLOBAL_GRAPH__ = {}
 
       function fetchData(name) {
         fetch(`/data/${name}.json`)
@@ -20,13 +78,79 @@
       fetchData('brasil')
       fetchData('usa')
       fetchData('europe')
+      fetchData('australia')
 
-      setTimeout(function () {
-        console.log(__DATA__);
-      }, 3000);
+      function prepareGraph(graph, colors) {
+        var len = Object.keys(graph).length
+        var index
 
-      // var colors = AlgorithmBruteForce.run(json)
-      // var colors = GreedyAlgorithm.run(json)
+        const newGraph = {
+          nodes: [],
+          edges: [],
+        }
+
+        index = 0
+        for (var node in colors) {
+          newGraph.nodes.push({
+            id: node,
+            label: node,
+            size: 1,
+            x: Math.random(),
+            y: Math.random(),
+            // x: 100 * Math.cos(2 * index * Math.PI / len),
+            // y: 100 * Math.sin(2 * index * Math.PI / len),
+            color: colors[node]
+          })
+          index++
+        }
+
+        index = 1
+        for (var node in graph) {
+          for (var neighbor of graph[node]) {
+            newGraph.edges.push({
+              id: index,
+              source: node,
+              target: neighbor
+            })
+
+            index++
+          }
+        }
+
+        return newGraph
+      }
+
+      $("button").on("click", function () {
+        var graph
+        var data_set = $("#data_set").val()
+
+        try {
+          // to delete & refresh the graph
+          var g = document.querySelector('#container');
+          var p = g.parentNode;
+          p.removeChild(g);
+          var c = document.createElement('div');
+          c.setAttribute('id', 'container');
+          p.appendChild(c);
+        } catch (e) {}
+
+
+        switch ($("#algorithm").val()) {
+          case "greedy_algorithm":
+            graph = prepareGraph(__DATA__[data_set], GreedyAlgorithm.run(__DATA__[data_set]))
+            break;
+          default:
+            graph = prepareGraph(__DATA__[data_set], AlgorithmBruteForce.run(__DATA__[data_set]))
+            break;
+        }
+
+        var __GLOBAL_GRAPH__ = new sigma({
+          container: 'container',
+          graph
+        })
+
+        __GLOBAL_GRAPH__.startForceAtlas2({worker: true, barnesHutOptimize: false});
+      })
     </script>
   </body>
 </html>

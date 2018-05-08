@@ -1,7 +1,7 @@
 var AlgorithmBruteForce = (function() {
   var _graph = {}
   var _colours = {}
-  var _colorOptions = ["red", "green", "blue", "black"]
+  var _colorOptions = ["#F00", "#0F0", "#00F", "#000"]
   var _count
 
   function isSafe(current, option) {
