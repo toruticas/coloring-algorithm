@@ -68,6 +68,7 @@
 
     <script src="/brute_force.js"></script>
     <script src="/greedy_algorithm.js"></script>
+    <script src="/welsh_powell_algorithm.js"></script>
     <script src="/vendor/sigma.min.js"></script>
     <script src="/vendor/sigma.layout.forceAtlas2.min.js"></script>
     <script src="/vendor/jquery-3.3.1.min.js"></script>
@@ -146,6 +147,8 @@
           case "greedy":
             processedGraph =  GreedyAlgorithm.run(__DATA__[data_set])
             break;
+          case "welsh_powell":
+            processedGraph =  WelshPowellAlgorithm.run(__DATA__[data_set])
           default:
             processedGraph = AlgorithmBruteForce.run(__DATA__[data_set])
             break;
