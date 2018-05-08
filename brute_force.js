@@ -1,8 +1,18 @@
 var AlgorithmBruteForce = (function() {
   var _graph = {}
   var _colours = {}
-  var _colorOptions = ["#F00", "#0F0", "#00F", "#000"]
+  var _colorOptions = []
   var _count
+  var _chromaticNumber
+
+  function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
 
   function isSafe(current, option) {
     for (neighbor of _graph[current]) {
@@ -22,7 +32,14 @@ var AlgorithmBruteForce = (function() {
     }
 
     var current = Object.keys(_graph)[pos]
-    for (var option of _colorOptions) {
+
+    for (var i = 0; i < _chromaticNumber; i++) {
+      if (!_colorOptions[i]) {
+        _colorOptions[i] = getRandomColor()
+      }
+      
+      var option = _colorOptions[i]
+
       if (isSafe(current, option)) {
         _colours[current] = option
 
@@ -41,9 +58,10 @@ var AlgorithmBruteForce = (function() {
     return true
   }
 
-  function run(graph) {
+  function run(graph, chromaticNumber = 4) {
     _graph = graph
     _count = 0
+    _chromaticNumber = chromaticNumber
 
     colouring()
 

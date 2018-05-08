@@ -3,7 +3,20 @@ var GreedyAlgorithm = (function() {
   var _vertices = 0
   var _colours = {}
   var _counter = 0
-  var _colorOptions = ["#F00", "#0F0", "#00F", "#000", "#FF0", "#0FF", "#F0F"]
+  var _colorOptions = []
+
+  for (var i = 0; i < 10; i++) {
+    _colorOptions[i] = getRandomColor()
+  }
+
+  function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
 
   function greedyColoring() {
     _colours[Object.keys(_graph)[0]] = _colorOptions[0]
@@ -25,6 +38,10 @@ var GreedyAlgorithm = (function() {
         if (available[cr]) {
           break;
         }
+      }
+
+      if (!_colorOptions[cr]) {
+        _colorOptions[cr] = getRandomColor()
       }
 
       _colours[Object.keys(_graph)[u]] = _colorOptions[cr]

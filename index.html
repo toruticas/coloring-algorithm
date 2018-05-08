@@ -99,21 +99,19 @@
 
         index = 0
         for (var node in colors) {
+          index++
+        }
+
+        index = 0
+        for (var node in graph) {
           newGraph.nodes.push({
             id: node,
             label: node,
             size: 1,
             x: Math.random(),
             y: Math.random(),
-            // x: 100 * Math.cos(2 * index * Math.PI / len),
-            // y: 100 * Math.sin(2 * index * Math.PI / len),
-            color: colors[node]
+            color: colors[node] || "#800080"
           })
-          index++
-        }
-
-        index = 1
-        for (var node in graph) {
           for (var neighbor of graph[node]) {
             newGraph.edges.push({
               id: index,
@@ -149,13 +147,22 @@
             break;
           case "welsh_powell":
             processedGraph =  WelshPowellAlgorithm.run(__DATA__[data_set])
+            break;
           default:
-            processedGraph = AlgorithmBruteForce.run(__DATA__[data_set])
+            var chromaticNumber = 4
+            while (true) {
+              processedGraph = AlgorithmBruteForce.run(__DATA__[data_set], chromaticNumber)
+              if (Object.keys(processedGraph.colours).length === Object.keys(__DATA__[data_set]).length) {
+                break;
+              }
+              chromaticNumber++;
+            }
             break;
         }
 
         $("#counter").text(processedGraph.counter)
         graph = prepareGraph(__DATA__[data_set], processedGraph.colours)
+        window.__GRAPH__ = graph
 
         var __GLOBAL_GRAPH__ = new sigma({
           container: 'container',
